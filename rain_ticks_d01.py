@@ -13,8 +13,7 @@ from scipy.ndimage.filters import minimum_filter, maximum_filter
 #--------------------------------------------------------
 ####################### FUNCTIONS  #######################
 def georeferencio():
-	"""calcula UN só valor de x e y georeferenciados,
-	que serve para tódolos instantes de tempo"""
+	"""compute latitudes, longitudes, x, y"""
 	x_dim = len(ncfile.dimensions['west_east'])
 	y_dim = len(ncfile.dimensions['south_north'])
 	dx = float(ncfile.DX)
@@ -40,7 +39,7 @@ def georeferencio():
 	return x,y, mp,nlats,nlons,lons1,lats;
 
 def dailyrain(t):
-	"""calcula a rain diaria """
+	"""compute daily rain """
 	rain = (ncfile.variables['RAINNC'][t,:,:]+ncfile.variables['RAINC'][t,:,:])-(ncfile.variables['RAINNC'][t-3,:,:]+ncfile.variables['RAINC'][t-3,:,:])
 	return rain;
 
@@ -57,7 +56,7 @@ def pressure(t):
 
 
 def ticks(matriz,mode='wrap',window=10):
-    '''atopa os valores  (min e max)de unha matriz input '''
+    '''find min and max values from an inputa matrix'''
     baixa = minimum_filter(matriz, mode=mode, size=window)
     alta = maximum_filter(matriz, mode=mode, size=window)
     return np.nonzero(matriz == baixa), np.nonzero(matriz == alta)
@@ -73,12 +72,12 @@ date=datetime(int(yyyy),int(mm),int(dd),00) #comezo no dia no que estamos
 delta=timedelta(hours=3)
 
 
-#----------------------------------------------------------------------
-####################### DOWNLOAD & open netcdf  #######################
+#----------------------------------------------------------------------------------------
+####################### Download from Meteogalicia & open netcdf  #######################
 
-thredds_meteogalicia='mandeo.meteogalicia.es/thredds/fileServer/modelos/wrf/rawoutput/wrf_36km/'+str(today)+'/'
-netcdf='wrfout_d01_'+str(today)+'_0000.nc'
-PATH_DESCARGA='/home/usc/fm/srs/store/Meteogalicia/'
+thredds_meteogalicia='https://mandeo.meteogalicia.es/thredds/fileServer/wrf_2d_36km/fmrc/files/'+str(today)+'/'
+netcdf='wrf_arw_det_history_d01_'+str(today)+'_0000.nc4'
+PATH_DESCARGA='/Users/sabelasanfiz'
 
 if os.path.isfile(PATH_DESCARGA+netcdf):
 	ncfile=Dataset(PATH_DESCARGA+netcdf)
@@ -104,13 +103,12 @@ for t in range(ncfile.variables['Times'].shape[0]):
 	#define plot
 	fig = plt.figure(figsize=(10,8),frameon=False)
 	ax1 = fig.add_subplot(111)
-	ax1.set_title('Presion (mb), Chuvia 3hr (mm) '+str(date),fontsize=14,bbox=dict(facecolor='white', alpha=0.65),x=0.5,y=1.05,weight = 'demibold')
+	ax1.set_title('Presion (hPa), Rain 3hr (l/m^2) '+str(date),fontsize=14,bbox=dict(facecolor='white', alpha=0.65),x=0.5,y=1.05,weight = 'demibold')
 
 	#plot pressure
 	clevs = np.array(np.arange(940,1050,5))
 	mslp = pressure(t)
 	cs1 = mp.contour(x,y,mslp,clevs,linewidths=1.5,animated=True)
-
 
 	# plot rain
 	#clevs=[ 0.2, 0.5, 1, 2, 5,10, 15, 20, 25, 30, 35, 40, 45,50]
