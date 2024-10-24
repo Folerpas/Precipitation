@@ -30,14 +30,3 @@ This Python script downloads meteorological data from the **WRF model** via the 
 7. **Cleaning Up**:  
    The script deletes the raw NetCDF and optional PNG, keeping only the final GIF as the output.
 
-### Libraries and Dependencies
-
-- `netCDF4`: For reading NetCDF files.
-- `numpy`: For numerical calculations.
-- `matplotlib`: For plotting data.
-- `Basemap`: For map projections and geospatial visualizations.
-- `scipy`: For applying filters to identify local minima and maxima in the data.
-
-### Example Usage
-
-To run the script, simply execute it in a Python environment with the required libraries installed. It will automatically download the necessary WRF model data from the MeteoGalicia THREDDS server for the current day, generate the plots, and save the results in a GIF.
