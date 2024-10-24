@@ -2,7 +2,7 @@
 
 ### Script Overview
 
-This Python script downloads meteorological data from the **WRF model** via the **THREDDS server of MeteoGalicia**, processes it, and generates visual representations of sea-level pressure and other weather data for a specified time range. The script uses NetCDF data, applies georeferencing techniques, and plots the data using `Basemap` and `matplotlib`.
+This Python script downloads meteorological data from the **WRF model** via the **THREDDS server of MeteoGalicia**, processes it, and generates visual representations of sea-level pressure and precipitation for the current day. 
 
 ### Key Features
 
